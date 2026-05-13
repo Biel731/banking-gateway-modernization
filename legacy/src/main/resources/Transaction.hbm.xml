@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<!-- Transaction.hbm.xml need to:
+        1. Declare the mapping between Transaction.java and the "transactions" table
+        2. Map the "id" field as the primary key with database-generated value (identity)
+        3. Map PartnerCode -> partner_code (VARCHAR)
+        4. Map Amount -> amount (NUMERIC)
+        5. Map Status -> status (VARCHAR)
+        6. Map Created_at -> created_at (TIMESTAMP)
+        Field names must match Transaction.java exactly - typos cause runtime erros, not compile erros -->
+
+<hibernate-mapping>
+
+    <class name="com.banking.gateway.model.Transaction" table="transactions">
+        <id name="id" column="id" type="long">
+            <!-- Intentionaly legacy flaw: IDENTITY strategy is database-specific
+                 Switching database (e.g., Oracle) require would changing this-->
+            <generator class="identity"/>
+        </id>
+        
+        <property name="partnerCode" column="partner_code" type="string" not-null="true"/>
+        <property name="amount" column="amount" type="big_decimal" not-null="true"/>
+        <property name="status" column="status" type="string" not-null="true"/>
+        <property name="createdAt" column="created_at" type="timestamp"/>
+    </class>
+
+</hibernate-mapping>
